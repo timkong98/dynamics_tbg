@@ -1,7 +1,10 @@
 # dynamics_tbg
-Code for paper "Tight-binding dynamics of twisted bilayer graphene" by Tianyu Kong, Diyi Liu, Alexander B. Watson and Mitchell Luskin [arxiv link]
+Code for paper "Modeling of electronic dynamics in twisted bilayer graphene" by T. Kong, D. Liu, M. Luskin and A. B. Watson. [arxiv link]
 
-Examples
-`run_bm.py`:
-`run_tb.py`:
-`visualize.py`:
+Sample code
+
+`run_bm.py`: Generate the Bistrizer-MacDonald model.
+
+`run_tb.py`: Generate the tight-binding model with truncation.
+
+`visualize.py`: Code for plotting the results.
