@@ -1,8 +1,9 @@
-import TBG_lattice
+from TBG_lattice import TBG
 import numpy as np
+from tqdm import tqdm
 from scipy.linalg import expm
 
-class TB_model(TBG_lattice):
+class TB_model(TBG):
     '''
     Define the tight-binding model using:
     theta: twist angle in deg, a: lattice constant, L: interlayer distance
@@ -10,7 +11,7 @@ class TB_model(TBG_lattice):
     nn: use nearest-neighbor for intralayer
     '''
     def __init__(self, theta, a, L, h, nn=True):
-        super().init(theta, a, L)
+        super().__init__(theta, a, L)
         self.h = h
         self.nn = nn
         self.H_tb = None
@@ -23,7 +24,7 @@ class TB_model(TBG_lattice):
         t = 3.048
 
         H = np.zeros([N, N], dtype='complex')
-        for i in range(N):
+        for i in tqdm(range(N), desc='Making H'):
             for j in range(N):
                 dx = pos_x[i] - pos_x[j]
                 dy = pos_y[i] - pos_y[j]

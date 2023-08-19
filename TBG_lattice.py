@@ -145,17 +145,17 @@ class TBG:
         k1x, k1y = self.K_1
         k2x, k2y = self.K_2
         N = pos_x.size
-        v = np.zeros(4*N, dtype='complex')
+        v = np.zeros(N, dtype='complex')
 
-        for i in range(4*N):
+        for i in range(N):
             x = pos_x[i]
             y = pos_y[i]
             z1a, z1b, z2a, z2b = f(x,y)
-            if i < N:
+            if i < N / 4:
                 v[i] = z1a * np.exp((k1x*x+k1y*y)*1j)
-            elif i < 2*N:
+            elif i < 2*N / 4:
                 v[i] = z1b * np.exp((k1x*x+k1y*y)*1j)
-            elif i < 3*N:
+            elif i < 3*N / 4:
                 v[i] = z2a * np.exp((k2x*x+k2y*y)*1j)
             else:           
                 v[i] = z2b * np.exp((k2x*x+k2y*y)*1j)

@@ -1,6 +1,5 @@
 import numpy as np
-import TBG_lattice
-import TB_model
+from TB_model import TB_model
 
 
 # lattice coefficients

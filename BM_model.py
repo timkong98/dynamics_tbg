@@ -1,7 +1,8 @@
-import TBG_lattice
+from TBG_lattice import TBG
 import numpy as np
+from tqdm import tqdm
 
-class BM_model(TBG_lattice):
+class BM_model(TBG):
     def __init__(self, theta, a, L, w0, w1, N_freq, N_supercell):
         super().__init__(theta, a, L)
 
@@ -22,11 +23,11 @@ class BM_model(TBG_lattice):
         # E_k: for each k, the 2*dim eigenvalues
         # V_k: for each k and E_k, the 2*dim dimension eigenvectors
         self.Nk = N_supercell ** 2 
-        self.k_list = np.zeros([self.NK, 2])
+        self.k_list = np.zeros([self.Nk, 2])
         self.E_k = np.zeros([self.Nk, self.dim_H])
-        self.V_k = np.zeros([self.N_tot, self.dim_H, self.dim_H], dtype=complex) 
+        self.V_k = np.zeros([self.Nk, self.dim_H, self.dim_H], dtype=complex) 
 
-        self.V_decomposed = None
+        self.V_decomposed = np.zeros_like(self.V_k)
 
 
     def H_BM(self, k):
@@ -35,8 +36,6 @@ class BM_model(TBG_lattice):
         
         kx, ky = k  
         s1x, s1y = self.s1
-        s2x, s2y = self.s2
-        s3x, s3y = self.s3
         b1x, b1y = self.b_m1
         b2x, b2y = self.b_m2
         
@@ -84,7 +83,7 @@ class BM_model(TBG_lattice):
         ux = ux.flatten()
         uy = uy.flatten()
         
-        for i in range(self.Nk):
+        for i in tqdm(range(self.Nk), desc='Solving for k'):
             kx = self.b_m1[0]*ux[i] + self.b_m2[0]*uy[i]
             ky = self.b_m1[1]*ux[i] + self.b_m2[1]*uy[i]
             k = np.array([kx, ky])
@@ -139,7 +138,7 @@ class BM_model(TBG_lattice):
         # update V_decomposed, a vector representation of f
         # using eigenvectors in V_k 
         
-        for i in range(self.Nk):
+        for i in tqdm(range(self.Nk), desc='Decomposing f'):
             k = self.k_list[i, :]
             vecs = self.V_k[i, :, :]
 
@@ -156,7 +155,7 @@ class BM_model(TBG_lattice):
     def bm_propagator(self, x, y, t):
         z1a, z1b, z2a, z2b = 0, 0, 0, 0
         
-        for i in range(self.Nk):
+        for i in tqdm(range(self.Nk), desc='Running time propagation'):
             k = self.k_list[i, :]
             for j in range(self.dim_H):
                 E = self.E_k[i, j]
@@ -177,10 +176,10 @@ class BM_model(TBG_lattice):
         z1a, z1b, z2a, z2b = z
         N = z1a.size
 
-        z_with_phase = np.zeros(x.size, dtype='complex')
+        z_with_phase = np.zeros(pos_x.size, dtype='complex')
         k1x, k1y = self.K_1
         k2x, k2y = self.K_2
-        for i in range(x.size):
+        for i in range(pos_x.size):
             x = pos_x[i]
             y = pos_y[i]
             if i < N:
