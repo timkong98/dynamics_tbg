@@ -1,5 +1,5 @@
 # dynamics_tbg
-Code for paper "Modeling of electronic dynamics in twisted bilayer graphene" by T. Kong, D. Liu, M. Luskin and A. B. Watson. [arXiv:2308.10430]
+Code for paper "Modeling of electronic dynamics in twisted bilayer graphene" by T. Kong, D. Liu, M. Luskin and A. B. Watson. [[arXiv:2308.10430](https://arxiv.org/abs/2308.10430)]
 
 Sample code
 
